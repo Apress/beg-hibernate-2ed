@@ -1,0 +1,53 @@
+<project name="spring">
+	
+   <property file="build.properties"/>
+   <property name="src" location="JavaSource"/>
+   <property name="bin" location="bin"/>
+   <property name="sql" location="sql"/>
+
+   <path id="classpath.base">
+      <pathelement path="${src}"/>
+      <pathelement path="${bin}"/>
+      <fileset dir="WebContent/WEB-INF/lib" includes="**/*.jar"/>
+      <pathelement location="${servlet.path}"/>
+      <pathelement location="${hibernate.path}"/>
+      <fileset dir="${hibernate.lib}" includes="**/*.jar"/>
+   	  <pathelement location="${hibernate.annotations.path}"/>
+      <fileset dir="${hibernate.annotations.lib}" includes="**/*.jar"/>
+   	  <pathelement location="${jdbc.driver.path}"/>
+   </path>
+
+   <path id="classpath.tools">
+      <path refid="classpath.base"/>
+      <pathelement location="${hibernate.tools.path}"/>
+   </path>
+
+	<taskdef 
+	       name="htools"
+	       classname="org.hibernate.tool.ant.HibernateToolTask"
+	       classpathref="classpath.tools"/>
+
+   <target name="exportAnnotationsDDL" depends="compile">
+   	  <mkdir dir="${sql}"/>
+      <htools destdir="${sql}">
+         <classpath refid="classpath.tools"/>
+         <annotationconfiguration configurationfile="${src}/hibernate.cfg.xml"/>
+         <hbm2ddl create="true" drop="true" format="true" export="true" outputfilename="${ant.project.name}.dll"/>
+      </htools>
+   </target>
+
+   <target name="exportXmlDDL" depends="compile">
+   	  <mkdir dir="${sql}"/>
+      <htools destdir="${sql}">
+         <classpath refid="classpath.tools"/>
+         <configuration configurationfile="${src}/xml_hibernate.cfg.xml"/>
+         <hbm2ddl create="true" drop="true" format="true" export="true" outputfilename="${ant.project.name}.dll"/>
+      </htools>
+   </target>
+
+   <target name="compile">
+   	  <mkdir dir="bin"/>
+      <javac srcdir="${src}" destdir="${bin}" classpathref="classpath.base"/>
+   </target>
+	
+</project>

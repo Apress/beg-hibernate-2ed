@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.foo">
+  <class name="Office" table="office">
+  	<id type="int" name="id">
+  	 <generator class="native"/>
+  	</id>
+  	<property name="description" type="string"/>
+  	<property name="suffix" type="string"/>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,8 @@
+# set character-set to utf8
+SET NAMES 'utf8';
+
+# use the database
+USE `geonames`;
+
+LOAD DATA INFILE '../US/US.txt' INTO TABLE `geonames`.`geonames` CHARACTER SET utf8 (geonameId,name,ansiName,alternateNames,latitude,longitude,featureClass,featureCode,countryCode,cc2,admin1Code,admin2Code,admin3Code,admin4Code,population,elevation,gtopo30,timezone,modificationDate);
+

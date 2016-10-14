@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<!-- Hibernate configurations -->
+
+	<!-- Removed for AKQA testing
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="configurationClass"
+			value="org.hibernate.cfg.AnnotationConfiguration" />
+		<property name="configLocation"
+			value="classpath:hibernate.cfg.xml" />
+	</bean>
+	 -->	
+
+	<!-- 
+	<bean name="openSessionInViewInterceptor"
+		class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="singleSession" value="true"/>
+	</bean>
+	 -->	
+	
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<bean id="daoTxTemplate"
+		abstract="true" 
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="create*">PROPAGATION_REQUIRED,ISOLATION_READ_COMMITTED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,ISOLATION_READ_COMMITTED</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- (In Use for Testing AKQA issue) Unused Alternative Configuration -->	
+	<bean id="sampleDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+	   <property name="jndiName" value="java:comp/env/jdbc/spring"/>
+	</bean>
+
+	<!-- Modified for AKQA testing
+	<bean id="sampleSessionFactory"
+	 -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="sampleDataSource"/>
+		<property name="mappingResources">
+			<list>
+				<value>com/hibernatebook/spring/Paper.hbm.xml</value>
+				<value>com/hibernatebook/spring/Article.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+		    	<prop key="hibernate.connection.pool_size">0</prop>
+		        <prop key="hibernate.show_sql">true</prop>
+        		<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- DAO configurations (note use of template) -->
+
+	<bean id="paperDao" parent="daoTxTemplate">
+		<property name="target">
+			<bean class="com.hibernatebook.spring.dao.PaperDaoImpl">
+				<property name="sessionFactory" ref="sessionFactory" />
+			</bean>
+		</property>
+	</bean>
+
+	<!-- Basic Spring MVC configurations -->
+
+	<!-- Removed for AKQA testing
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+	</bean>
+
+	<bean id="urlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="openSessionInViewInterceptor" />
+			</list>
+		</property>
+
+		<property name="mappings">
+			<props>
+				<prop key="/viewPapers.do">viewPapersController</prop>
+				<prop key="/createPaper.do">createPaperController</prop>
+				<prop key="/viewArticles.do">viewArticlesController</prop>
+				<prop key="/createArticle.do">createArticleController</prop>
+			</props>
+		</property>
+	</bean>
+	-->
+	
+	<!-- Message resources -->
+
+	<!-- Removed for AKQA testing
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="message"/>
+	</bean>
+	-->
+
+	<!-- Validators -->
+
+	<!-- Removed for AKQA testing
+	<bean id="createPaperValidator"
+		class="com.hibernatebook.spring.validator.CreatePaperValidator" />
+
+	<bean id="createArticleValidator"
+		class="com.hibernatebook.spring.validator.CreateArticleValidator" />
+	-->
+
+	<!-- Controller configurations -->
+
+	<!-- Removed for AKQA testing
+	<bean id="viewPapersController"
+		class="com.hibernatebook.spring.controller.ViewPapersController">
+		<property name="paperDao" ref="paperDao" />
+	</bean>
+
+	<bean id="createPaperController"
+		class="com.hibernatebook.spring.controller.CreatePaperController">
+		<property name="commandClass" value="com.hibernatebook.spring.form.CreatePaper" />
+		<property name="commandName" value="paperForm" />
+		<property name="formView" value="createPaper" />
+		<property name="successView" value="viewPapers" />
+		<property name="validator" ref="createPaperValidator" />
+		<property name="paperDao" ref="paperDao" />
+	</bean>
+
+	<bean id="viewArticlesController"
+		class="com.hibernatebook.spring.controller.ViewArticlesController">
+		<property name="paperDao" ref="paperDao" />
+	</bean>
+
+	<bean id="createArticleController"
+		class="com.hibernatebook.spring.controller.CreateArticleController">
+		<property name="commandClass" value="com.hibernatebook.spring.form.CreateArticle" />
+		<property name="commandName" value="articleForm" />
+		<property name="formView" value="createArticle" />
+		<property name="successView" value="viewArticles" />
+		<property name="bindOnNewForm" value="true" />
+		<property name="validator" ref="createArticleValidator" />
+		<property name="paperDao" ref="paperDao" />
+	</bean>
+	-->
+
+</beans>

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+   <class name="sample.Phone" table="phone" >
+
+      <id name="id" type="long" column="id">
+         <generator class="native"/>
+      </id>
+
+      <property name="number" column="number" type="string"/>
+
+      <property name="comment" column="comment" type="string"/>
+      
+      <many-to-one
+         name="user"
+         column="aduser"
+         class="sample.User"
+		 not-null="true"/>
+
+   </class>
+</hibernate-mapping>

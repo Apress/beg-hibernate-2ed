@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+   <class name="com.hibernatebook.spring.Paper" table="paper">
+
+      <id name="id" type="int" column="id">
+         <generator class="native"/>
+      </id>
+
+      <property name="title" column="title" type="string"/>
+
+	  <set name="articles">
+  	     <key column="paper"/>
+	     <one-to-many class="com.hibernatebook.spring.Article"/>
+	  </set>
+
+   </class>
+</hibernate-mapping>

@@ -1,0 +1,197 @@
+<project name="queries">
+
+	<property file="build.properties" />
+	<property name="src" location="src" />
+	<property name="bin" location="bin" />
+	<property name="sql" location="sql" />
+   <property name="hibernate.tools"
+      value="${hibernate.tools.home}${hibernate.tools.path}"/>
+   <property name="hibernate.tools.lib"
+      value="${hibernate.tools.home}${hibernate.tools.lib.path}"/>
+
+
+   <path id="classpath.base">
+      <pathelement location="${src}"/>
+      <pathelement location="${bin}"/>
+      <pathelement location="${slf4j.implementation.jar}"/>
+      <pathelement location="${hibernate.home}/hibernate3.jar"/>
+      <fileset dir="${hibernate.home}/lib" includes="**/*.jar"/>
+      <pathelement location="${hsql.home}/lib/hsqldb.jar"/>
+   </path>
+
+   <path id="classpath.tools">
+      <path refid="classpath.base"/>
+      <pathelement
+         location="${hibernate.tools.lib}/commons-logging-1.0.4.jar"/>
+      <pathelement
+         location="${hibernate.tools}/freemarker.jar"/>
+      <pathelement
+         location="${hibernate.tools}/hibernate-tools.jar"/>
+   </path>
+
+	<taskdef name="htools" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="classpath.tools" />
+
+	<target name="exportDDL" depends="compile">
+		<mkdir dir="${sql}" />
+		<htools destdir="${sql}">
+			<classpath refid="classpath.base" />
+			<annotationconfiguration configurationfile="${src}/hibernate.cfg.xml" />
+			<hbm2ddl create="true" drop="true" format="true" export="true" outputfilename="${ant.project.name}.dll" />
+		</htools>
+	</target>
+
+	<target name="compile">
+		<mkdir dir="bin" />
+		<javac srcdir="${src}" destdir="${bin}" classpathref="classpath.base" />
+	</target>
+
+	<target name="populate" depends="exportDDL">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="populate" />
+		</java>
+	</target>
+
+	<target name="SimpleHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="SimpleHQL" />
+		</java>
+	</target>
+
+	<target name="CommentedHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="CommentedHQL" />
+		</java>
+	</target>
+
+	<target name="FullyQualifiedHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="FullyQualifiedHQL" />
+		</java>
+	</target>
+
+	<target name="ProjectionHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="ProjectionHQL" />
+		</java>
+	</target>
+
+	<target name="HQLForRestrictions" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="HQLForRestrictions" />
+		</java>
+	</target>
+
+	<target name="NamedParametersHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="NamedParametersHQL" />
+		</java>
+	</target>
+
+	<target name="ObjectNamedParametersHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="ObjectNamedParametersHQL" />
+		</java>
+	</target>
+
+	<target name="PagingHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="PagingHQL" />
+		</java>
+	</target>
+
+	<target name="UniqueResultHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="UniqueResultHQL" />
+		</java>
+	</target>
+
+	<target name="OrderHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="OrderHQL" />
+		</java>
+	</target>
+
+	<target name="OrderTwoPropertiesHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="OrderTwoPropertiesHQL" />
+		</java>
+	</target>
+
+	<target name="AssociationsHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="AssociationsHQL" />
+		</java>
+	</target>
+
+	<target name="AssociationObjectsHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="AssociationObjectsHQL" />
+		</java>
+	</target>
+
+	<target name="FetchAssociationsHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="FetchAssociationsHQL" />
+		</java>
+	</target>
+
+	<target name="CountHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="CountHQL" />
+		</java>
+	</target>
+
+	<target name="NamedQuery" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="NamedQuery" />
+		</java>
+	</target>
+
+	<target name="ScalarSQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="ScalarSQL" />
+		</java>
+	</target>
+
+	<target name="SelectSQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="SelectSQL" />
+		</java>
+	</target>
+
+	<target name="UpdateHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="UpdateHQL" />
+		</java>
+	</target>
+
+	<target name="DeleteHQL" depends="compile">
+		<java classpathref="classpath.base" classname="com.hibernatebook.queries.HQLExample" fork="true">
+			<arg value="DeleteHQL" />
+		</java>
+	</target>
+	
+	<target name="all">
+	   <antcall target="populate"/>
+	   <antcall target="SimpleHQL"/>
+	   <antcall target="CommentedHQL"/>
+	   <antcall target="FullyQualifiedHQL"/>
+	   <antcall target="ProjectionHQL"/>
+	   <antcall target="HQLForRestrictions"/>
+	   <antcall target="NamedParametersHQL"/>
+	   <antcall target="ObjectNamedParametersHQL"/>
+	   <antcall target="PagingHQL"/>
+	   <antcall target="UniqueResultHQL"/>
+	   <antcall target="OrderHQL"/>
+	   <antcall target="OrderTwoPropertiesHQL"/>
+	   <antcall target="AssociationsHQL"/>
+	   <antcall target="AssociationObjectsHQL"/>
+	   <antcall target="FetchAssociationsHQL"/>
+	   <antcall target="CountHQL"/>
+	   <antcall target="NamedQuery"/>
+	   <antcall target="ScalarSQL"/>
+	   <antcall target="SelectSQL"/>
+	   <antcall target="UpdateHQL"/>
+	   <antcall target="DeleteHQL"/>
+	</target>
+</project>

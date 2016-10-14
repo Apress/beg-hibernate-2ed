@@ -1,0 +1,13 @@
+===ALL USERS===
+ray is activated.
+jason is activated.
+beth is not activated.
+judy is not activated.
+rob is not activated.
+===ACTIVATED USERS===
+ray is activated.
+jason is activated.
+===NON-ACTIVATED USERS===
+beth is not activated.
+judy is not activated.
+rob is not activated.

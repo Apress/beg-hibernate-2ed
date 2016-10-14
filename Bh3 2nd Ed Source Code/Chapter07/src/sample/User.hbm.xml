@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+   <class name="sample.User" table="aduser">
+
+      <id name="id" type="long" column="id">
+         <generator class="native"/>
+      </id>
+
+      <property name="name" column="name" type="string" unique="true"/>
+
+      <property name="password" column="password" type="string"/>
+
+	  <set name="phoneNumbers" inverse="true">
+  	     <key column="aduser"/>
+	     <one-to-many class="sample.Phone"/>
+	  </set>
+
+   </class>
+</hibernate-mapping>

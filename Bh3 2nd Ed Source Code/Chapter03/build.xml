@@ -1,0 +1,110 @@
+<project name="sample">
+
+   <property file="build.properties"/>
+
+   <property name="src" location="src"/>
+   <property name="bin" location="bin"/>
+   <property name="sql" location="sql"/>
+   <property name="hibernate.tools"
+      value="${hibernate.tools.home}${hibernate.tools.path}"/>
+   <property name="hibernate.tools.lib"
+      value="${hibernate.tools.home}${hibernate.tools.lib.path}"/>
+
+   <path id="classpath.base">
+      <pathelement location="${src}"/>
+      <pathelement location="${bin}"/>
+      <pathelement location="${slf4j.implementation.jar}"/>
+      <pathelement location="${hibernate.home}/hibernate3.jar"/>
+      <fileset dir="${hibernate.home}/lib" includes="**/*.jar"/>
+      <pathelement location="${hsql.home}/lib/hsqldb.jar"/>
+   </path>
+
+   <path id="classpath.tools">
+      <path refid="classpath.base"/>
+      <pathelement
+         location="${hibernate.tools.lib}/commons-logging-1.0.4.jar"/>
+      <pathelement
+         location="${hibernate.tools}/freemarker.jar"/>
+      <pathelement
+         location="${hibernate.tools}/hibernate-tools.jar"/>
+   </path>
+
+   <taskdef name="htools"
+      classname="org.hibernate.tool.ant.HibernateToolTask"
+      classpathref="classpath.tools"/>
+
+   <target name="exportDDL" depends="compile">
+      <mkdir dir="${sql}"/>
+      <htools destdir="${sql}">
+         <classpath refid="classpath.tools"/>
+         <annotationconfiguration
+            configurationfile="${src}/hibernate.cfg.xml"/>
+         <hbm2ddl drop="true" outputfilename="sample.sql"/>
+      </htools>
+   </target>
+
+   <target name="compile">
+      <mkdir dir="${bin}"/>
+      <javac srcdir="${src}" destdir="${bin}" classpathref="classpath.base"/>
+   </target>
+
+   <target name="populateMessages" depends="compile">
+      <java classname="sample.PopulateMessages" classpathref="classpath.tools"/>
+   </target>
+
+   <target name="listMessages" depends="compile">
+      <java classname="sample.ListMessages" classpathref="classpath.base"/>
+   </target>
+
+   <target name="createUsers" depends="compile">
+      <java classname="sample.CreateUser" classpathref="classpath.base">
+         <arg value="dave"/>
+         <arg value="dodgy"/>
+      </java>
+      <java classname="sample.CreateUser" classpathref="classpath.base">
+         <arg value="jeff"/>
+         <arg value="jammy"/>
+      </java>
+   </target>
+
+   <target name="createCategories" depends="compile">
+      <java classname="sample.CreateCategory" classpathref="classpath.base">
+         <arg value="retro"/>
+      </java>
+      <java classname="sample.CreateCategory" classpathref="classpath.base">
+         <arg value="kitsch"/>
+      </java>
+   </target>
+
+   <target name="postAdverts" depends="compile">
+      <java classname="sample.PostAdvert" classpathref="classpath.base">
+         <arg value="dave"/>
+         <arg value="retro"/>
+         <arg value="Sinclair Spectrum for sale"/>
+         <arg value="48k original box and packaging"/>
+      </java>
+      <java classname="sample.PostAdvert" classpathref="classpath.base">
+         <arg value="dave"/>
+         <arg value="kitsch"/>
+         <arg value="Commemorative Plates"/>
+         <arg value="Kitten and puppies design"/>
+      </java>
+      <java classname="sample.PostAdvert" classpathref="classpath.base">
+         <arg value="jeff"/>
+         <arg value="retro"/>
+         <arg value="Atari 2600 wanted"/>
+         <arg value="Must have original joysticks."/>
+      </java>
+      <java classname="sample.PostAdvert" classpathref="classpath.base">
+         <arg value="jeff"/>
+         <arg value="kitsch"/>
+         <arg value="Inflatable Sofa"/>
+         <arg value="Leopard skin pattern. Nice."/>
+      </java>
+   </target>
+
+   <target name="listAdverts" depends="compile">
+      <java classname="sample.ListAdverts" classpathref="classpath.base"/>
+   </target>
+
+</project>

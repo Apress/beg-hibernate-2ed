@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="com.hibernatebook.filters.User">
+    <id name="id" type="int">
+      <generator class="native"/>
+    </id>
+
+    <property name="username" type="string" length="32"/>
+    <property name="activated" type="boolean"/>
+    <filter name="activatedFilter" condition=":activatedParam = activated"/>
+  </class>
+  <filter-def name="activatedFilter">
+    <filter-param name="activatedParam" type="boolean"/>
+  </filter-def>
+</hibernate-mapping>

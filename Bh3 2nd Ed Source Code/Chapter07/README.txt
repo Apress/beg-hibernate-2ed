@@ -1,0 +1,15 @@
+README for Chapter 7
+
+You will need to install
+
+* Hibernate 3.5 or higher
+* Hibernate Tools 3.2 or higher
+* Apache Ant 1.8.1 or higher
+* HSQLDB 2.0.0 or higher
+* an SLF4J implementation (compatible with the SLF4J API version of Hibernate 3.5 being used - this can change). We used 1.5.11
+
+You will need to edit build.properties to point to the installations of each of these projects. In particular, the Hibernate Tools paths for the jar and lib file will change if you are not using Hibernate Tools 3.2.4
+
+Compile the classes in the directory with the ant compile task, or "ant compile" from the command line. 
+
+There are no runnable examples for Chapter 7. Included are the class files and the XML mappings if you are using XML mapping in your Hibernate project.

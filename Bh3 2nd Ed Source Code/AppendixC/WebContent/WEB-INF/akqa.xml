@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+	   <property name="jndiName" value="java:comp/env/jdbc/spring"/>
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="mappingResources">
+			<list>
+				<value>com/hibernatebook/spring/Paper.hbm.xml</value>
+				<value>com/hibernatebook/spring/Article.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+		    	<prop key="hibernate.connection.pool_size">0</prop>
+		        <prop key="hibernate.show_sql">true</prop>
+        		<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<bean id="daoTxTemplate"
+		abstract="true" 
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="paperDao" parent="daoTxTemplate">
+		<property name="proxyInterfaces">
+			<list>
+				<value>com.hibernatebook.spring.dao.PaperDao</value>
+			</list>
+		</property>
+		<property name="target">
+			<bean class="com.hibernatebook.spring.dao.PaperDaoImpl">
+				<property name="sessionFactory" ref="sessionFactory" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="articleDao" parent="daoTxTemplate">
+		<property name="proxyInterfaces">
+			<list>
+				<value>com.hibernatebook.spring.dao.ArticleDao</value>
+			</list>
+		</property>
+		<property name="target">
+			<bean class="com.hibernatebook.spring.dao.ArticleDaoImpl">
+				<property name="sessionFactory" ref="sessionFactory" />
+			</bean>
+		</property>
+	</bean>
+	
+</beans>

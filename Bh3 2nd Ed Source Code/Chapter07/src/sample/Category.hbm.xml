@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+   <class name="sample.Category" table="category">
+
+      <id name="id" type="long" column="id">
+         <generator class="native"/>
+      </id>
+
+      <property name="title" column="title" type="string" unique="true"/>
+
+      <set name="adverts" table="link_category_advert">
+         <key column="id"/>
+         <many-to-many class="sample.Advert" column="advert"/>
+      </set>
+      
+   </class>
+</hibernate-mapping>

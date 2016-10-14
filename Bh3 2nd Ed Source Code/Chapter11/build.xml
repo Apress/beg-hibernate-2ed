@@ -1,0 +1,55 @@
+<project name="filters">
+	
+   <property file="build.properties"/>
+   <property name="src" location="src"/>
+   <property name="bin" location="bin"/>
+   <property name="sql" location="sql"/>
+   <property name="hibernate.tools"
+      value="${hibernate.tools.home}${hibernate.tools.path}"/>
+   <property name="hibernate.tools.lib"
+      value="${hibernate.tools.home}${hibernate.tools.lib.path}"/>
+
+
+   <path id="classpath.base">
+      <pathelement location="${src}"/>
+      <pathelement location="${bin}"/>
+      <pathelement location="${slf4j.implementation.jar}"/>
+      <pathelement location="${hibernate.home}/hibernate3.jar"/>
+      <fileset dir="${hibernate.home}/lib" includes="**/*.jar"/>
+      <pathelement location="${hsql.home}/lib/hsqldb.jar"/>
+   </path>
+
+   <path id="classpath.tools">
+      <path refid="classpath.base"/>
+      <pathelement
+         location="${hibernate.tools.lib}/commons-logging-1.0.4.jar"/>
+      <pathelement
+         location="${hibernate.tools}/freemarker.jar"/>
+      <pathelement
+         location="${hibernate.tools}/hibernate-tools.jar"/>
+   </path>
+
+	<taskdef 
+	       name="htools"
+	       classname="org.hibernate.tool.ant.HibernateToolTask"
+	       classpathref="classpath.tools"/>
+
+   <target name="exportDDL" depends="compile">
+   	  <mkdir dir="${sql}"/>
+      <htools destdir="${sql}">
+         <classpath refid="classpath.tools"/>
+         <annotationconfiguration configurationfile="${src}/hibernate.cfg.xml"/>
+         <hbm2ddl create="true" drop="true" format="true" export="true" outputfilename="${ant.project.name}.dll"/>
+      </htools>
+   </target>
+
+   <target name="compile">
+   	  <mkdir dir="bin"/>
+      <javac srcdir="${src}" destdir="${bin}" classpathref="classpath.base"/>
+   </target>
+	
+   <target name="simpleFilterExample" depends="exportDDL">
+    <java classname="com.hibernatebook.filters.SimpleFilterExample" classpathref="classpath.base"/>
+   </target>
+
+</project>
